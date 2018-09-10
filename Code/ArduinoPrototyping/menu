@@ -1,0 +1,88 @@
+#include <SPI.h>
+#include <TFT.h>
+
+#define cs 10
+#define dc 9
+#define rst 8
+
+#define up 2
+#define down 3
+
+TFT TFTscreen = TFT(cs, dc, rst);
+
+Const int menuSize = 4;
+String menuItems[menuSize];
+
+Bool upLastState = HIGH;
+Bool downLastState = HIGH;
+
+Int currentMenu = 0;
+String = temp;
+Char currentPrintOut[10];
+
+Void setup()
+{
+Serial.begin(115200);
+
+pinMode(up, INPUT_PULLUP);
+pinMode(down, INPUT_PULLUP);
+
+menuItems[0] = “Menu 0”;
+menuItems[1] = “Menu 1”;
+menuItems[2] = “Menu 2”;
+menuItems[3] = “Menu 3”;
+
+TFTscreen.begin();
+
+MenuChanged();
+}
+
+Void loop()
+{
+If (digitalRead(up) != upLastState) {
+upLastState = !upLastState;
+
+if(!upLastState){
+If (currentMenu > 0) {
+currentMenu—;
+}
+Else
+{
+currentMenu = menuSize - 1;
+}
+MenuChanged();
+}
+Else
+{
+}
+}
+
+If (digitalRead(down) != downLastState) {
+downLastState = !downLastState;
+
+if(!downLastState){
+if(currentMenu < menuSize -1) {
+currentMenu ++;
+}
+Else
+{
+}
+}
+
+delay(50);
+}
+
+Void MenuChanged() {
+
+Serial.printIn(menuItems[currentMenu]);
+
+TFTscreen.background(255,255,255);
+TFTscreen.setTextSize(3);
+TFTscreen.stroke(50,50,50);
+
+temp=String(menuItems[currentMenu]);
+temp.toCharArray(currentPrintOut, 10);
+
+TFTscreen.text(currentPrintOut, 25, 50);
+}
+
